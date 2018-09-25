@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
             Move(Direction.Right);
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        if (Input.GetKey(KeyCode.Space) && IsGrounded())
             _rigidbody.AddForce(Vector2.up * 1 * _jumpForce, ForceMode2D.Impulse);
     }
 
@@ -80,6 +80,8 @@ public class PlayerController : MonoBehaviour
         Vector2 t_position = transform.position;
         Vector2 t_direction = Vector2.down;
         float distance = 1.0f;
+
+        Debug.DrawRay(t_position, t_direction, Color.green);
 
         RaycastHit2D hit = Physics2D.Raycast(t_position, t_direction, distance, _groundLayer);
         if (hit.collider != null)

@@ -61,6 +61,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\DataManagement\Scripts\Data\CommandPrompt.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Data\DataBuilder.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Data\DataElement.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Data\DataParser.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Data\DataReferences.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Data\SaveReferences.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Managers\DataManager.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Managers\LoadingscreenManager.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Managers\SceneManager.cs" />
+    <Compile Include="Assets\DataManagement\Scripts\Managers\UIManager.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Reference Include="Unity.2D.PixelPerfect.Editor">
       <HintPath>C:/Users/kevin/Desktop/School/Meesterproef/Library/ScriptAssemblies/Unity.2D.PixelPerfect.Editor.dll</HintPath>
