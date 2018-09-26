@@ -72,7 +72,9 @@
     <Compile Include="Assets\DataManagement\Scripts\Managers\SceneManager.cs" />
     <Compile Include="Assets\DataManagement\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\PlayerData.cs" />
     <Reference Include="Unity.2D.PixelPerfect.Editor">
       <HintPath>C:/Users/kevin/Desktop/School/Meesterproef/Library/ScriptAssemblies/Unity.2D.PixelPerfect.Editor.dll</HintPath>
     </Reference>

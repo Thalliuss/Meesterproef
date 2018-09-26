@@ -5,6 +5,16 @@ public class LoadingscreenManager : MonoBehaviour
 {
     public static LoadingscreenManager Instance { get; set; }
     public bool IsLoading { get; set; }
+    public bool IsSetupScene
+    {
+        get
+        {
+            if (SceneManager.GetActiveScene().buildIndex == 0) {
+                return true;
+            } else return false;
+
+        }
+    }
 
     [SerializeField] private bool _loadOnStart;
     [SerializeField] private string _levelToLoad;

@@ -71,7 +71,7 @@ namespace DataManagement
             DataBuilder.BuildDataReferences();
 
             //BUILD OBJECTS HERE
-            //DataBuilder.BuildElementsOfType<DataElement>(t_sceneManager.DataReferences.SaveData);
+            DataBuilder.BuildElementsOfType<PlayerData>(t_sceneManager.DataReferences.SaveData);
         }
 
         public void GenerateSave()

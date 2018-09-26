@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour
 
     private void OpenMenu()
     {
-        if (Input.GetKeyDown(KeyCode.E) && !LoadingscreenManager.Instance.IsLoading)
+        if (Input.GetKeyDown(KeyCode.E) && !LoadingscreenManager.Instance.IsLoading && !LoadingscreenManager.Instance.IsSetupScene)
         {
             MenuOpened = !MenuOpened;
             _menu.SetActive(MenuOpened);
@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
 
     private void OpenPrompt()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !LoadingscreenManager.Instance.IsLoading)
+        if (Input.GetKeyDown(KeyCode.P) && !LoadingscreenManager.Instance.IsLoading && !LoadingscreenManager.Instance.IsSetupScene)
         {
             _commandsOpened = !_commandsOpened;
             _commands.SetActive(_commandsOpened);
