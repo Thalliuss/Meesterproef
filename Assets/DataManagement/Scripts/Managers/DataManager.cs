@@ -72,6 +72,7 @@ namespace DataManagement
 
             //BUILD OBJECTS HERE
             DataBuilder.BuildElementsOfType<PlayerData>(t_sceneManager.DataReferences.SaveData);
+            DataBuilder.BuildElementsOfType<GlobalData>(t_sceneManager.DataReferences.SaveData);
         }
 
         public void GenerateSave()
@@ -140,8 +141,6 @@ namespace DataManagement
                         File.Copy(Directory.GetFiles(t_name)[a], Directory.GetFiles(t_name)[a].Replace(ID, p_input), true);
                 }
 
-                Debug.Log("Saving Data to: " + _path + p_input);
-
                 ID = p_input;
                 SaveReferences.Init();
             }
@@ -156,10 +155,8 @@ namespace DataManagement
                 SceneManager t_sceneManager = SceneManager.Instance;
 
                 if (t_sceneManager != null)
-                {
-                    t_sceneManager.ClearAllData();
                     Build();
-                }
+                
                 SceneManager.Instance.Reload();
             }
         }

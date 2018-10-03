@@ -182,23 +182,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 50604553}
   m_CullTransparentMesh: 0
---- !u!1 &301471191 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1952634143809656, guid: c6e069ce660efb842ab307e988922b69,
-    type: 2}
-  m_PrefabInternal: {fileID: 742050744}
---- !u!114 &301471192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 301471191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b16b18ef1fd26784e9a1706db5197012, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerData: {fileID: 0}
 --- !u!1 &359203749
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,39 +320,6 @@ Prefab:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 901562951}
-    - target: {fileID: 50191165671231316, guid: c6e069ce660efb842ab307e988922b69,
-        type: 2}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 61334251527497226, guid: c6e069ce660efb842ab307e988922b69,
-        type: 2}
-      propertyPath: m_AutoTiling
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212455580124105622, guid: c6e069ce660efb842ab307e988922b69,
-        type: 2}
-      propertyPath: m_DrawMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4668173963020956, guid: c6e069ce660efb842ab307e988922b69, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4668173963020956, guid: c6e069ce660efb842ab307e988922b69, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 212455580124105622, guid: c6e069ce660efb842ab307e988922b69,
-        type: 2}
-      propertyPath: m_SpriteSortPoint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114931392521622746, guid: c6e069ce660efb842ab307e988922b69,
-        type: 2}
-      propertyPath: _jumpForce
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6e069ce660efb842ab307e988922b69, type: 2}
   m_IsPrefabAsset: 0

@@ -24,20 +24,6 @@ public class PlayerController : MonoBehaviour
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    private void FixedUpdate ()
-    {
-        _camera.transform.position = Vector2.Lerp(_camera.transform.position, (Vector2)transform.position + _offset, _followSpeed * Time.deltaTime);
-
-        if (Input.GetKey(KeyCode.A))
-            Move(Direction.Left);
-
-        if (Input.GetKey(KeyCode.D))
-            Move(Direction.Right);
-
-        if (Input.GetKey(KeyCode.Space) && IsGrounded())
-            _rigidbody.AddForce(Vector2.up * 1 * _jumpForce, ForceMode2D.Impulse);
-    }
-
     private enum Direction
     {
         Right,
@@ -77,18 +63,32 @@ public class PlayerController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        Vector2 t_position = transform.position;
+        var t_spriteRotation = (!_spriteRenderer.flipX) ? .2f : -.2f;
+
+        Vector2 t_position = new Vector3(transform.position.x - t_spriteRotation, transform.position.y, transform.position.z); ;
         Vector2 t_direction = Vector2.down;
-        float distance = 1.0f;
+        float distance = .8f;
 
-        Debug.DrawRay(t_position, t_direction, Color.green);
+        Debug.DrawRay(t_position, t_direction.normalized * distance, Color.green);
 
-        RaycastHit2D hit = Physics2D.Raycast(t_position, t_direction, distance, _groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(t_position, t_direction * distance, distance, _groundLayer);
         if (hit.collider != null)
-        {
             return true;
-        }
 
         return false;
+    }
+
+    private void FixedUpdate()
+    {
+        _camera.transform.position = Vector2.Lerp(_camera.transform.position, (Vector2)transform.position + _offset, _followSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.A))
+            Move(Direction.Left);
+
+        if (Input.GetKey(KeyCode.D))
+            Move(Direction.Right);
+
+        if (Input.GetKey(KeyCode.Space) && IsGrounded())
+            _rigidbody.AddForce(Vector2.up * 1 * _jumpForce, ForceMode2D.Impulse);
     }
 }
