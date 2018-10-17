@@ -51,7 +51,11 @@ public class LoadingscreenManager : MonoBehaviour
         t_uiManager.OpenLoading(p_text);
         IsLoading = true;
 
+        t_uiManager.LoadingBar.maxValue = p_max;
         t_uiManager.LoadingBar.value = p_current / p_max;
+
+        if (t_uiManager.LoadingBar.value == p_max)
+            CloseLoadingscreen();
     }
 
     public void CloseLoadingscreen()

@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        _camera.transform.position = (Vector2)transform.position + _offset;
     }
 
     private enum Direction

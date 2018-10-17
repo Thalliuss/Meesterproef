@@ -6,8 +6,8 @@ public class Player : MonoBehaviour
 {
     private SceneManager _sceneManager;
 
-    [SerializeField]
-    private PlayerData _playerData;
+    [HideInInspector]
+    public PlayerData playerData;
 
     private const string _playerDataID = "PlayerDataID";
 
@@ -23,11 +23,11 @@ public class Player : MonoBehaviour
     {
         _sceneManager = SceneManager.Instance;
 
-        _playerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
-        if (_playerData == null)
+        playerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
+        if (playerData == null)
         {
             _sceneManager.DataReferences.AddElement<PlayerData>(_playerDataID);
-            _playerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
+            playerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
         }
     }
 
@@ -37,13 +37,13 @@ public class Player : MonoBehaviour
         {
             yield return new WaitForSeconds(p_input);
 
-            _playerData.Position = transform.position;
-            _playerData.Save();
+            playerData.Position = transform.position;
+            playerData.Save();
         }
     }
 
     private Vector3 LoadPosition()
     {
-        return (_playerData.Position != Vector3.zero) ? _playerData.Position : transform.position;
+        return (playerData.Position != Vector3.zero) ? playerData.Position : transform.position;
     }
 }

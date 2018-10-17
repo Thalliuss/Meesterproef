@@ -39,6 +39,4 @@ public class GlobalData : DataElement
         CurrentLevel = p_currentLevel;
         Timer = p_timer;
     }
-
-
 }
