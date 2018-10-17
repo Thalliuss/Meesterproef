@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SaveTimer(1));
 
         if (SceneManager.GetActiveScene().buildIndex != _currentLevel) {
-            NextLevel();
-        } else StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex)));
+            ReloadCurrentLevel();
+        } //else StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex)));
 
     }
 
@@ -113,12 +113,22 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex + 1 > SceneManager.sceneCountInBuildSettings - 1)
             return;
 
-        StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex + 1)));
+        //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex + 1)));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
         PlayerData t_playerData = FindObjectOfType<Player>().playerData;
+
         t_playerData.Position = Vector3.zero;
         t_playerData.Save();
+    }
+
+    private void ReloadCurrentLevel()
+    {
+        if (SceneManager.GetActiveScene().buildIndex + 1 > SceneManager.sceneCountInBuildSettings - 1)
+            return;
+
+        //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex + 1)));
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     [ContextMenu("Previous Level.")]
@@ -127,7 +137,7 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex - 1 < 1)
             return;
 
-        StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex - 1)));
+        //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex - 1)));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 
         PlayerData t_playerData = FindObjectOfType<Player>().playerData;

@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator SavePosition(float p_input)
     {
-        while (true)
+        while (true && playerData != null)
         {
             yield return new WaitForSeconds(p_input);
 
@@ -44,6 +44,8 @@ public class Player : MonoBehaviour
 
     private Vector3 LoadPosition()
     {
+        if (playerData == null) return transform.position;
+
         return (playerData.Position != Vector3.zero) ? playerData.Position : transform.position;
     }
 }
