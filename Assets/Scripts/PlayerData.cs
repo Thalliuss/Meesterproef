@@ -18,9 +18,24 @@ public class PlayerData : DataElement
     [SerializeField]
     private Vector3 _position;
 
-    public PlayerData(string p_id, Vector3 p_position) : base(p_id)
+    public int Health
     {
-        ID = p_id;
+        get
+        {
+            return _health;
+        }
+
+        set
+        {
+            _health = value;
+        }
+    }
+    [SerializeField]
+    private int _health;
+
+    public PlayerData(string p_id, Vector3 p_position, int p_health) : base(p_id)
+    {
         Position = p_position;
+        Health = p_health;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -79,7 +77,7 @@ public class UIManager : MonoBehaviour
 
     private void OpenMenu()
     {
-        if (Input.GetKeyDown(KeyCode.E) && !LoadingscreenManager.Instance.IsLoading && !LoadingscreenManager.Instance.IsSetupScene)
+        if (Input.GetKeyDown(KeyCode.O) && !LoadingscreenManager.Instance.IsLoading && !LoadingscreenManager.Instance.IsSetupScene)
         {
             MenuOpened = !MenuOpened;
             _menu.SetActive(MenuOpened);

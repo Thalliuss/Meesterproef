@@ -60,7 +60,9 @@ namespace DataManagement
             var t_root = new DirectoryInfo(t_path);
             var t_dir = t_root.GetDirectories().OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
 
+            // Unity generated file, do not delete.
             if (t_dir.Name != "Unity") return t_dir.Name;
+
             else return null;
         }
 
@@ -73,6 +75,8 @@ namespace DataManagement
             //BUILD OBJECTS HERE
             DataBuilder.BuildElementsOfType<PlayerData>(t_sceneManager.DataReferences.SaveData);
             DataBuilder.BuildElementsOfType<GlobalData>(t_sceneManager.DataReferences.SaveData);
+            DataBuilder.BuildElementsOfType<ListedEnemyData>(t_sceneManager.DataReferences.SaveData);
+
         }
 
         public void GenerateSave()

@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SaveTimer(float p_input)
     {
-        while (true)  
+        while (true && globalData != null)  
         {
             yield return new WaitForSeconds(p_input);
 
@@ -62,11 +62,13 @@ public class GameManager : MonoBehaviour
 
     private float LoadTimer()
     {
+        if (globalData == null) return 0f;
         return globalData.Timer;
     }
 
     private int LoadCurrentLevel()
     {
+        if (globalData == null) return SceneManager.GetActiveScene().buildIndex;
         return (globalData.CurrentLevel != 0) ? globalData.CurrentLevel : SceneManager.GetActiveScene().buildIndex;
     }
 
@@ -116,10 +118,10 @@ public class GameManager : MonoBehaviour
         //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex + 1)));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
-        PlayerData t_playerData = FindObjectOfType<Player>().playerData;
+        Player t_player = FindObjectOfType<Player>();
 
-        t_playerData.Position = Vector3.zero;
-        t_playerData.Save();
+        t_player.playerData.Position = Vector3.zero;
+        t_player.playerData.Save();
     }
 
     private void ReloadCurrentLevel()
@@ -140,9 +142,10 @@ public class GameManager : MonoBehaviour
         //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex - 1)));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 
-        PlayerData t_playerData = FindObjectOfType<Player>().playerData;
-        t_playerData.Position = Vector3.zero;
-        t_playerData.Save();
+        Player t_player = FindObjectOfType<Player>();
+
+        t_player.playerData.Position = Vector3.zero;
+        t_player.playerData.Save();
     }
 
     private void Update()

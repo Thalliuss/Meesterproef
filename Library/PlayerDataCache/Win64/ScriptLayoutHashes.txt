@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/kevin/Desktop/School/Meesterproef/Build/New Unity Project.exe
+C:/Users/kevin/Desktop/School/Meesterproef/Build/Meesterproef.exe
 SceneListBegin?
 Assets/Scenes/Setup.unity
 Assets/Scenes/Level1.unity
