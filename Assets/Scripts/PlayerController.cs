@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 _offset;
     [SerializeField] private float _followSpeed;
 
+    [Header("Animator")]
+    [SerializeField] private Animator _animator;
+
     private void Start ()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -35,6 +39,8 @@ public class PlayerController : MonoBehaviour
     {
         if (p_input == Direction.Right)
         {
+            _animator.Play("Walk");
+
             if (Mathf.Abs(_rigidbody.velocity.x) < _maxVelocity)
                 _rigidbody.AddForce(Vector2.right * 1 * _moveForce, ForceMode2D.Impulse);
 
@@ -45,10 +51,14 @@ public class PlayerController : MonoBehaviour
             }
 
             if (_rigidbody.velocity.x > 0)
-                _spriteRenderer.flipX = false;
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+
+            //_spriteRenderer.flipX = false;
         }
         if (p_input == Direction.Left)
         {
+            _animator.Play("Walk");
+
             if (Mathf.Abs(_rigidbody.velocity.x) < _maxVelocity)
                 _rigidbody.AddForce(Vector2.left * 1 * _moveForce, ForceMode2D.Impulse);
 
@@ -59,8 +69,15 @@ public class PlayerController : MonoBehaviour
             }
 
             if (_rigidbody.velocity.x < 0)
-                _spriteRenderer.flipX = true;
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+                
+            //_spriteRenderer.flipX = true;
         }
+    }
+
+    private void Slash()
+    {
+        _animator.Play("Slash");
     }
 
     private bool IsGrounded()
@@ -85,12 +102,24 @@ public class PlayerController : MonoBehaviour
         _camera.transform.position = Vector2.Lerp(_camera.transform.position, (Vector2)transform.position + _offset, _followSpeed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.A))
+        {
             Move(Direction.Left);
-
-        if (Input.GetKey(KeyCode.D))
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
             Move(Direction.Right);
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Slash();
+            }
+        }
 
         if (Input.GetKey(KeyCode.Space) && IsGrounded())
             _rigidbody.AddForce(Vector2.up * 1 * _jumpForce, ForceMode2D.Impulse);
+
+
     }
 }

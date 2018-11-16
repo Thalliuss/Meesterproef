@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         _startPosition = transform.position;
 
         transform.position = LoadPosition();
-        StartCoroutine(SavePosition(1));
+        StartCoroutine(SavePosition(1f));
 
         _health = LoadHealth();
     }
@@ -69,10 +69,6 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private Vector2 _startPosition;
-    [SerializeField]
-    private GameObject _sword;
-    [SerializeField]
-    private Animator _animator;
 
     private Slider _healthVisual;
     private int _health = 3;
@@ -81,22 +77,26 @@ public class Player : MonoBehaviour
     {
         if (DataManager.Instance != null) Setup();
 
-        _healthVisual = GameObject.FindGameObjectWithTag("Healthbar").GetComponent<Slider>();
+        GameObject t_health = GameObject.FindGameObjectWithTag("Healthbar");
+        _healthVisual = (t_health != null) ? t_health.GetComponent<Slider>() : null;
     }
 
     private void OnTriggerStay2D(Collider2D p_other)
     {
+        if (p_other.CompareTag("Enemy") && p_other.GetType() == typeof(BoxCollider2D))
+            StartCoroutine(InvincibilityFrames());
+
+        if (p_other.CompareTag("Flag"))
+            GameManager.Instance.NextLevel();
+
         if (p_other.CompareTag("Box") && Input.GetKey(KeyCode.E))
             p_other.GetComponent<Rigidbody2D>().mass = 4;
         else p_other.GetComponent<Rigidbody2D>().mass = 400;
-    }
 
-    private void OnTriggerEnter2D(Collider2D p_other)
-    {
-        if (p_other.CompareTag("Enemy"))
+        if (p_other.CompareTag("Spike"))
         {
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.z);
-            float speed = 150;
+            float speed = 50;
             Vector2 force = transform.forward;
             force = new Vector2(force.x, 1);
             GetComponent<Rigidbody2D>().AddForce(force * speed);
@@ -104,6 +104,7 @@ public class Player : MonoBehaviour
 
             StartCoroutine(InvincibilityFrames());
         }
+
     }
 
     private bool _invincible = false;
@@ -122,6 +123,13 @@ public class Player : MonoBehaviour
     [ContextMenu("TakeDamage")]
     public void TakeDamage()
     {
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.z);
+        float speed = 500;
+        Vector2 force = transform.forward;
+        force = new Vector2(force.x, 1);
+        GetComponent<Rigidbody2D>().AddForce(force * speed);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+
         _health--;
         SaveHealth();
 
@@ -139,23 +147,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        _healthVisual.value = _health;
+        if(_healthVisual != null)
+            _healthVisual.value = _health;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (_sword.GetComponent<SpriteRenderer>().flipX == false)
-                _animator.Play("HitRight");
-            else _animator.Play("HitLeft");
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            _sword.GetComponent<SpriteRenderer>().flipX = true;
-            _sword.GetComponent<SpriteRenderer>().sortingOrder = 5;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            _sword.GetComponent<SpriteRenderer>().flipX = false;
-            _sword.GetComponent<SpriteRenderer>().sortingOrder = 6;
-        }
+        if (transform.position.y <= -7f)
+            Die();
     }
 }

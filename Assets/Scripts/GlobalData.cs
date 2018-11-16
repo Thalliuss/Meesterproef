@@ -1,4 +1,6 @@
 ﻿using DataManagement;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GlobalData : DataElement
@@ -30,6 +32,39 @@ public class GlobalData : DataElement
         set
         {
             _timer = value;
+        }
+    }
+
+    [Serializable]
+    public class Highscore
+    {
+        [SerializeField]
+        private float _score;
+        public float Score
+        {
+            get
+            {
+                return _score;
+            }
+
+            set
+            {
+                _score = value;
+            }
+        }
+    }
+    [SerializeField]
+    private List<Highscore> _highscores = new List<Highscore>();
+    public List<Highscore> Highscores
+    {
+        get
+        {
+            return _highscores;
+        }
+
+        set
+        {
+            _highscores = value;
         }
     }
 

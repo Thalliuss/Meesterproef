@@ -180,6 +180,22 @@ namespace DataManagement
             }
         }
 
+        public void ClearData(string p_input)
+        {
+            string t_path = Application.persistentDataPath + "/";
+            string[] t_data = Directory.GetFiles(Directory.GetDirectories(t_path + "/Autosave")[0]);
+            for (uint i = 0; i < t_data.Length; i++)
+            {
+                print(t_data[i] + " " + p_input);
+
+                if (t_data[i].Contains(p_input))
+                {
+                    Directory.Delete(t_data[i], true);
+                    Debug.Log("Cleaning Data from: " + t_data[i]);
+                }
+            }
+        }
+
         private void OnDestroy()
         {
             string t_temp = Application.persistentDataPath + "/" + _tempID + "/";

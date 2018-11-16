@@ -8,6 +8,9 @@ TagManager:
   - Box
   - Healthbar
   - Enemy
+  - Flag
+  - Spike
+  - Zwaard
   layers:
   - Default
   - TransparentFX
@@ -18,8 +21,8 @@ TagManager:
   - 
   - 
   - Ground
-  - 
-  - 
+  - Player
+  - Zwaard
   - 
   - 
   - 

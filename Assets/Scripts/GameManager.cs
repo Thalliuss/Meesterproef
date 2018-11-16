@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; set; }
+
+    [HideInInspector]
+    public GlobalData globalData;
+
     private DataManagement.SceneManager _sceneManager;
     private const string _globalDataID = "GlobalDataID";
 
@@ -18,10 +25,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int _currentLevel;
 
-    [HideInInspector]
-    public GlobalData globalData;
-
-    public static GameManager Instance { get; set; }
+    [SerializeField]
+    private Text _highscoreVisual;
 
     private void Awake()
     {
@@ -43,10 +48,11 @@ public class GameManager : MonoBehaviour
         _timer = LoadTimer();
         StartCoroutine(SaveTimer(1));
 
-        if (SceneManager.GetActiveScene().buildIndex != _currentLevel) {
-            ReloadCurrentLevel();
-        } //else StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex)));
+        if (globalData == null)
+            return;
 
+        for (int i = globalData.Highscores.Count; i > 0; i--)
+            _highscoreVisual.text += globalData.Highscores.Count - i + 1 + ". " + globalData.Highscores[i -1].Score + "\r\n";
     }
 
     private IEnumerator SaveTimer(float p_input)
@@ -68,13 +74,16 @@ public class GameManager : MonoBehaviour
 
     private int LoadCurrentLevel()
     {
-        if (globalData == null) return SceneManager.GetActiveScene().buildIndex;
-        return (globalData.CurrentLevel != 0) ? globalData.CurrentLevel : SceneManager.GetActiveScene().buildIndex;
+        if (globalData == null) return SceneManager.GetActiveScene().buildIndex -1;
+        return (globalData.CurrentLevel != 0) ? globalData.CurrentLevel : SceneManager.GetActiveScene().buildIndex -1;
     }
 
     private void SaveCurrentLevel(Scene p_previous, Scene p_next)
     {
-        _currentLevel = p_next.buildIndex;
+        if (globalData == null)
+            return;
+
+        _currentLevel = p_next.buildIndex -1;
 
         globalData.CurrentLevel = _currentLevel;
         globalData.Save();
@@ -109,28 +118,57 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Continue()
+    {
+        SceneManager.LoadScene(_currentLevel + 1);
+    }
+
     [ContextMenu("Next Level.")]
     public void NextLevel()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            List<GlobalData.Highscore> t_highscores = globalData.Highscores;
+
+            if (t_highscores.Count == 0)
+            {
+                GlobalData.Highscore t_highscore = new GlobalData.Highscore()
+                {
+                    Score = globalData.Timer
+                };
+
+                globalData.Highscores.Add(t_highscore);
+                globalData.Save();
+            }
+            else
+            {
+                if (globalData.Timer < t_highscores[t_highscores.Count - 1].Score)
+                {
+                    GlobalData.Highscore t_highscore = new GlobalData.Highscore()
+                    {
+                        Score = globalData.Timer
+                    };
+
+                    globalData.Highscores.Add(t_highscore);
+                    globalData.Save();
+                }
+            }
+            return;
+        }
+
         if (SceneManager.GetActiveScene().buildIndex + 1 > SceneManager.sceneCountInBuildSettings - 1)
             return;
 
         //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex + 1)));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+            return;
 
         Player t_player = FindObjectOfType<Player>();
 
         t_player.playerData.Position = Vector3.zero;
         t_player.playerData.Save();
-    }
-
-    private void ReloadCurrentLevel()
-    {
-        if (SceneManager.GetActiveScene().buildIndex + 1 > SceneManager.sceneCountInBuildSettings - 1)
-            return;
-
-        //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex + 1)));
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     [ContextMenu("Previous Level.")]
@@ -142,14 +180,40 @@ public class GameManager : MonoBehaviour
         //StartCoroutine(Loadingscreen(2, "Level " + (SceneManager.GetActiveScene().buildIndex - 1)));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+            return;
+
         Player t_player = FindObjectOfType<Player>();
 
         t_player.playerData.Position = Vector3.zero;
         t_player.playerData.Save();
     }
 
+    public void Restart()
+    {
+        if (DataManagement.DataManager.Instance == null)
+            return;
+
+        DataManagement.DataManager.Instance.ClearData("ListedEnemyData");
+        DataManagement.DataManager.Instance.ClearData("PlayerDataID");
+        DataManagement.DataManager.Instance.ClearData("GameData");
+
+        _timer = 0;
+        _currentLevel = 0;
+
+        NextLevel();
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
     private void Update()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+            return;
+        
         _timer += 1f * Time.deltaTime;
 
         _timerVisual.text = "Timer: " + _timer.ToString();

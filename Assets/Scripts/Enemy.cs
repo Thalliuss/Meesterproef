@@ -33,9 +33,11 @@ public class Enemy : MonoBehaviour
         enemyData = _listedEnemyData.FindEnemyDataByID(_enemyDataID);
         if (enemyData == null)
         {
-            ListedEnemyData.EnemyData t_enemy = new ListedEnemyData.EnemyData(_enemyDataID);
-            t_enemy.Health = _health;
-            t_enemy.Position = transform.position;
+            ListedEnemyData.EnemyData t_enemy = new ListedEnemyData.EnemyData(_enemyDataID)
+            {
+                Health = _health,
+                Position = transform.position
+            };
 
             _listedEnemyData.Enemies.Add(t_enemy);
             _listedEnemyData.Save();

@@ -59,6 +59,8 @@ public class ListedEnemyData : DataElement
             ID = p_id;
         }
     }
+    [SerializeField]
+    private List<EnemyData> _enemies = new List<EnemyData>();
     public List<EnemyData> Enemies
     {
         get
@@ -71,8 +73,11 @@ public class ListedEnemyData : DataElement
             _enemies = value;
         }
     }
-    [SerializeField]
-    private List<EnemyData> _enemies = new List<EnemyData>();
+
+    public ListedEnemyData(string p_id, List<EnemyData> p_enemies) : base(p_id)
+    {
+        Enemies = p_enemies;
+    }
 
     public EnemyData FindEnemyDataByID(string p_ID)
     {
@@ -84,10 +89,5 @@ public class ListedEnemyData : DataElement
                 return _enemies[i];
         }
         return null;
-    }
-
-    public ListedEnemyData(string p_id, List<EnemyData> p_enemies) : base(p_id)
-    {
-        Enemies = p_enemies;
     }
 }
