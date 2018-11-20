@@ -7,8 +7,7 @@ public class Player : MonoBehaviour
 {
     #region Save Implementation
 
-    [HideInInspector]
-    public PlayerData playerData;
+    public PlayerData PlayerData { get; set; }
 
     private SceneManager _sceneManager;
     private const string _playerDataID = "PlayerDataID";
@@ -17,15 +16,15 @@ public class Player : MonoBehaviour
     {
         _sceneManager = SceneManager.Instance;
 
-        playerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
-        if (playerData == null)
+        PlayerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
+        if (PlayerData == null)
         {
             _sceneManager.DataReferences.AddElement<PlayerData>(_playerDataID);
-            playerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
+            PlayerData = _sceneManager.DataReferences.FindElement<PlayerData>(_playerDataID);
 
-            playerData.Health = _health;
-            playerData.Position = transform.position;
-            playerData.Save();
+            PlayerData.Health = _health;
+            PlayerData.Position = transform.position;
+            PlayerData.Save();
         }
 
         _startPosition = transform.position;
@@ -38,89 +37,79 @@ public class Player : MonoBehaviour
 
     private IEnumerator SavePosition(float p_input)
     {
-        while (true && playerData != null)
+        while (true && PlayerData != null)
         {
             yield return new WaitForSeconds(p_input);
 
-            playerData.Position = transform.position;
-            playerData.Save();
+            PlayerData.Position = transform.position;
+            PlayerData.Save();
         }
     }
 
     private void SaveHealth()
     {
-        if (playerData == null) return;
+        if (PlayerData == null) return;
 
-        playerData.Health = _health;
-        playerData.Save();
+        PlayerData.Health = _health;
+        PlayerData.Save();
     }
 
     private Vector3 LoadPosition()
     {
-        return (playerData != null && playerData.Position != Vector3.zero) ? playerData.Position : transform.position;
+        return (PlayerData != null && PlayerData.Position != Vector3.zero) ? PlayerData.Position : transform.position;
     }
 
     private int LoadHealth()
     {
-        return (playerData != null) ? playerData.Health : _health;
+        return (PlayerData != null) ? PlayerData.Health : _health;
     }
 
     #endregion
 
-    [SerializeField]
-    private Vector2 _startPosition;
+    [SerializeField] private Vector2 _startPosition;
+    [SerializeField] private Slider _healthVisual;
 
-    private Slider _healthVisual;
     private int _health = 3;
 
     private void Start()
     {
-        if (DataManager.Instance != null) Setup();
+        if (DataManager.Instance != null)
+            Setup();
 
-        GameObject t_health = GameObject.FindGameObjectWithTag("Healthbar");
-        _healthVisual = (t_health != null) ? t_health.GetComponent<Slider>() : null;
+        if (GameManager.Instance != null)
+            _healthVisual = GameManager.Instance.HealthVisual;
     }
 
     private void OnTriggerStay2D(Collider2D p_other)
     {
         if (p_other.CompareTag("Enemy") && p_other.GetType() == typeof(BoxCollider2D))
-            StartCoroutine(InvincibilityFrames());
+            StartCoroutine(InvincibilityFrames(1));
 
         if (p_other.CompareTag("Flag"))
             GameManager.Instance.NextLevel();
 
-        if (p_other.CompareTag("Box") && Input.GetKey(KeyCode.E))
-            p_other.GetComponent<Rigidbody2D>().mass = 4;
+        if (p_other.CompareTag("Box") && Input.GetKey(KeyCode.E)) p_other.GetComponent<Rigidbody2D>().mass = 4;
         else p_other.GetComponent<Rigidbody2D>().mass = 400;
 
         if (p_other.CompareTag("Spike"))
-        {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.z);
-            float speed = 50;
-            Vector2 force = transform.forward;
-            force = new Vector2(force.x, 1);
-            GetComponent<Rigidbody2D>().AddForce(force * speed);
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
-
-            StartCoroutine(InvincibilityFrames());
-        }
-
+            StartCoroutine(InvincibilityFrames(1));
     }
 
+    /// Private variable used only in InvincibilityFrames();
     private bool _invincible = false;
-    private IEnumerator InvincibilityFrames()
+    /// ===================================================
+    private IEnumerator InvincibilityFrames(float p_input)
     {
         if (_invincible == false)
         {
             _invincible = true;
             TakeDamage();
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(p_input);
             _invincible = false;
         }
     }
 
-    [ContextMenu("TakeDamage")]
     public void TakeDamage()
     {
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.z);
@@ -150,7 +139,7 @@ public class Player : MonoBehaviour
         if(_healthVisual != null)
             _healthVisual.value = _health;
 
-        if (transform.position.y <= -7f)
+        if (transform.position.y <= -15f)
             Die();
     }
 }

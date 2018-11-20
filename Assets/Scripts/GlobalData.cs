@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class GlobalData : DataElement
 {
-    [SerializeField]
-    private int _currentLevel;
     public int CurrentLevel
     {
         get
@@ -19,9 +17,8 @@ public class GlobalData : DataElement
             _currentLevel = value;
         }
     }
+    [SerializeField] private int _currentLevel;
 
-    [SerializeField]
-    private float _timer;
     public float Timer
     {
         get
@@ -34,6 +31,7 @@ public class GlobalData : DataElement
             _timer = value;
         }
     }
+    [SerializeField] private float _timer;
 
     [Serializable]
     public class Highscore
@@ -53,8 +51,6 @@ public class GlobalData : DataElement
             }
         }
     }
-    [SerializeField]
-    private List<Highscore> _highscores = new List<Highscore>();
     public List<Highscore> Highscores
     {
         get
@@ -67,6 +63,7 @@ public class GlobalData : DataElement
             _highscores = value;
         }
     }
+    [SerializeField] private List<Highscore> _highscores = new List<Highscore>();
 
     public GlobalData(string p_id, int p_currentLevel, float p_timer) : base(p_id)
     {

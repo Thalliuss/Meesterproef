@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -22,6 +23,9 @@ public class PlayerController : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _audio;
+
     private void Start ()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -39,8 +43,6 @@ public class PlayerController : MonoBehaviour
     {
         if (p_input == Direction.Right)
         {
-            _animator.Play("Walk");
-
             if (Mathf.Abs(_rigidbody.velocity.x) < _maxVelocity)
                 _rigidbody.AddForce(Vector2.right * 1 * _moveForce, ForceMode2D.Impulse);
 
@@ -52,13 +54,9 @@ public class PlayerController : MonoBehaviour
 
             if (_rigidbody.velocity.x > 0)
                 transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
-
-            //_spriteRenderer.flipX = false;
         }
-        if (p_input == Direction.Left)
+        else if (p_input == Direction.Left)
         {
-            _animator.Play("Walk");
-
             if (Mathf.Abs(_rigidbody.velocity.x) < _maxVelocity)
                 _rigidbody.AddForce(Vector2.left * 1 * _moveForce, ForceMode2D.Impulse);
 
@@ -70,14 +68,13 @@ public class PlayerController : MonoBehaviour
 
             if (_rigidbody.velocity.x < 0)
                 transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
-                
-            //_spriteRenderer.flipX = true;
         }
     }
 
-    private void Slash()
+    private IEnumerator Hit()
     {
-        _animator.Play("Slash");
+        yield return new WaitForSeconds(.1f);
+        _animator.SetBool("Hitting", false);
     }
 
     private bool IsGrounded()
@@ -101,25 +98,37 @@ public class PlayerController : MonoBehaviour
     {
         _camera.transform.position = Vector2.Lerp(_camera.transform.position, (Vector2)transform.position + _offset, _followSpeed * Time.deltaTime);
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             Move(Direction.Left);
+            _animator.SetBool("Walking", true);
+
+            if (!_audio.isPlaying)
+                _audio.Play();
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             Move(Direction.Right);
+            _animator.SetBool("Walking", true);
+
+            if (!_audio.isPlaying)
+                _audio.Play();
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            _animator.SetBool("Walking", false);
+
+            if (Input.GetKey(KeyCode.Mouse0))
             {
-                Slash();
+                StartCoroutine(Hit());
+                _animator.SetBool("Hitting", true);
             }
+
+            if (_audio.isPlaying)
+                _audio.Stop();
         }
 
-        if (Input.GetKey(KeyCode.Space) && IsGrounded())
+        if (Input.GetKey(KeyCode.Space) && IsGrounded()) 
             _rigidbody.AddForce(Vector2.up * 1 * _jumpForce, ForceMode2D.Impulse);
-
-
     }
 }

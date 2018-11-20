@@ -59,8 +59,6 @@ public class ListedEnemyData : DataElement
             ID = p_id;
         }
     }
-    [SerializeField]
-    private List<EnemyData> _enemies = new List<EnemyData>();
     public List<EnemyData> Enemies
     {
         get
@@ -73,6 +71,7 @@ public class ListedEnemyData : DataElement
             _enemies = value;
         }
     }
+    [SerializeField] private List<EnemyData> _enemies = new List<EnemyData>();
 
     public ListedEnemyData(string p_id, List<EnemyData> p_enemies) : base(p_id)
     {

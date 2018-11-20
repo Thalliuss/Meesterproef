@@ -9,7 +9,7 @@ public class LoadingscreenManager : MonoBehaviour
     {
         get
         {
-            if (SceneManager.GetActiveScene().buildIndex == 0) {
+            if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1) {
                 return true;
             } else return false;
 

@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void LockCursor(bool p_input)
+    /*public void LockCursor(bool p_input)
     {
         if (p_input)
         {
@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-    }
+    }*/
 
     public void SetTimeScale(int p_input)
     {
@@ -77,7 +77,7 @@ public class UIManager : MonoBehaviour
 
     private void OpenMenu()
     {
-        if (Input.GetKeyDown(KeyCode.O) && !LoadingscreenManager.Instance.IsLoading && !LoadingscreenManager.Instance.IsSetupScene)
+        if (Input.GetKeyDown(KeyCode.Escape) && !LoadingscreenManager.Instance.IsLoading && !LoadingscreenManager.Instance.IsSetupScene)
         {
             MenuOpened = !MenuOpened;
             _menu.SetActive(MenuOpened);
@@ -93,20 +93,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void OpenPrompt()
+    /*private void OpenPrompt()
     {
         if (Input.GetKeyDown(KeyCode.P) && !LoadingscreenManager.Instance.IsLoading && !LoadingscreenManager.Instance.IsSetupScene)
         {
             _commandsOpened = !_commandsOpened;
             _commands.SetActive(_commandsOpened);
         }
-    }
+    }*/
 
     public void CloseMenu()
     {
-        LockCursor(true);
+        //LockCursor(true);
         _menu.SetActive(false);
         MenuOpened = false;
+        SetTimeScale(1);
     }
 
     public void OpenLoading(string p_input)
@@ -134,6 +135,6 @@ public class UIManager : MonoBehaviour
     public void Update()
     {
         OpenMenu();
-        OpenPrompt();
+        //OpenPrompt();
     }
 }

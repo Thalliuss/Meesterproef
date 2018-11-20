@@ -5,6 +5,8 @@ public class Sword : MonoBehaviour
 {
     private BoxCollider2D _collider;
 
+    [SerializeField] private AudioSource _audio;
+
     private void Start()
     {
         _collider = GetComponent<BoxCollider2D>();
@@ -13,10 +15,12 @@ public class Sword : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D p_other)
     {
         if (p_other.CompareTag("Enemy"))
-            StartCoroutine(InvincibilityFrames(p_other.GetComponent<Enemy>()));
+            StartCoroutine(InvincibilityFrames(p_other.transform.parent.GetComponent<Enemy>()));
     }
 
+    /// Private variable used only in InvincibilityFrames();
     private bool _invincible = false;
+    /// ===================================================
     private IEnumerator InvincibilityFrames(Enemy p_other)
     {
         if (_invincible == false)
@@ -26,10 +30,15 @@ public class Sword : MonoBehaviour
 
             yield return new WaitForSeconds(.2f);
             _invincible = false;
+
+            if (!_audio.isPlaying)
+                _audio.Play();
         }
     }
 
+    /// Private variable used only in Hit();
     private bool _hitting = false;
+    /// ===================================
     private IEnumerator Hit()
     {
         if (_hitting == false)
@@ -45,7 +54,7 @@ public class Sword : MonoBehaviour
     {
         _collider.enabled = _hitting;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0))
             StartCoroutine(Hit());      
     }
 }
